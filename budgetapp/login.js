@@ -1,11 +1,19 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const session = require('express-session');
 const router = express.Router();
 
 const { getData } = require('./accounts'); // Importă datele
 
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
+
+router.use(session({
+    secret: 'secret-key', // Înlocuiește cu o cheie puternică în producție
+    resave: false,
+    saveUninitialized: true
+}));
+
 
 router.get('/', (req, res) => {
     res.send(`
@@ -32,6 +40,7 @@ router.post('/', (req, res) => {
     const user = data.find(user => user.account.email === email && user.account.password === password);
 
     if (user) {
+        req.session.user = user;
         res.send(`<h1>Bun venit, ${email}!</h1>`);
     } else {
         res.status(401).send('<h1>Email sau parolă incorecte!</h1>');

@@ -7,7 +7,6 @@ fs.readFile('accounts.json', 'utf8', (err, data) => {
         console.error('Eroare la citirea fișierului:', err);
         return;
     }
-
     jsonData = JSON.parse(data);
 });
 
