@@ -1,0 +1,148 @@
+[
+    {
+        "produs": "Mere ionatane",
+        "pret": "3.50",
+        "type" : "mere"
+    },
+    {
+        "produs": "Lapte Zuzu",
+        "pret": "1.20",
+        "type" : "lapte"
+    },
+    {
+        "produs": "Paine Boromir",
+        "pret": "2.00",
+        "type": "paine"
+    },
+    {
+        "produs": "Oua M",
+        "pret": "4.00",
+        "type": "oua"
+    },
+    {
+        "produs": "Cascaval Hochland",
+        "pret": "5.50",
+        "type": "cascaval"
+
+    },
+    {
+        "produs": "Pepsi",
+        "pret": "3.00",
+        "type": "suc"
+    },
+    {
+        "produs": "Banane Premium",
+        "pret": "2.30",
+        "type": "banane"
+    },
+    {
+        "produs": "Iaurt Danone",
+        "pret": "1.80",
+        "type": "iaurt"
+    },
+    {
+        "produs": "Paste Barilla",
+        "pret": "3.20",
+        "type": "paste"
+    },
+    {
+        "produs": "Piept de pui Fragedo",
+        "pret": "6.50",
+        "type": "carne"
+    },
+    {
+        "produs": "Sos rosii Barilla",
+        "pret": "1.50",
+        "type": "sos"
+    },
+    {
+        "produs": "Cascaval Napolact",
+        "pret": "4.00",
+        "type": "cascaval"
+    },
+    {
+        "produs": "Sunca Sissi",
+        "pret": "10.00",
+        "type": "sunca"
+    },
+    {
+        "produs": "Salam Martinel",
+        "pret": "2.30",
+        "type": "salam"
+    },
+    {
+        "produs": "Lamai bio",
+        "pret": "1.00",
+        "type": "bio"
+    },
+    {
+        "produs": "Lamai coaja netratata",
+        "pret": "4.00",
+        "type": "lamai"
+    },
+    {
+        "produs": "Frisca HuLaLa",
+        "pret": "2.50",
+        "type": "frisca"
+    },
+    {
+        "produs": "Biscuiti Milka",
+        "pret": "1.80",
+        "type": "biscuiti"
+    },
+    {
+        "produs": "Frisca DrOetker",
+        "pret": "1.50",
+        "type": "frisca"
+    },
+    {
+        "produs": "Biscuiti Leibniz",
+        "pret": "2.80",
+        "type": "biscuiti"
+    },
+    {
+        "produs": "Sunca Caroli",
+        "pret": "5.00",
+        "type": "sunca"
+    },
+    {
+        "produs": "Salam Sergiana",
+        "pret": "3.30",
+        "type": "salam"
+    },
+    {
+        "produs": "Paste Panzani",
+        "pret": "2.20",
+        "type": "paste"
+    },
+    {
+        "produs": "Piept de pui Cocorico",
+        "pret": "4.50",
+        "type": "carne"
+    },
+    {
+        "produs": "Sos rosii Alce",
+        "pret": "0.50",
+        "type": "sos"
+    },
+    {
+        "produs": "Mere galbene",
+        "pret": "1.50",
+        "type" : "mere"
+    },
+    {
+        "produs": "Lapte LaDorna",
+        "pret": "0.90",
+        "type" : "lapte"
+    },
+    {
+        "produs": "Paine VelPitar",
+        "pret": "1.00",
+        "type": "paine"
+    },
+    {
+        "produs": "Oua L",
+        "pret": "6.00",
+        "type": "oua"
+    }
+]
