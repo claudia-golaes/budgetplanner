@@ -6,7 +6,7 @@
 html {
     width: 100%;
     height: 100%;
-    background: linear-gradient(325deg,  #6f00fc 0%,#fc7900 50%,#fcc700 100%);
+    background: #500202d8; /* Dark red background */
     font-family: Fredoka;
 }
 
@@ -24,14 +24,19 @@ html {
 }
 
 button {
-    background: #282A3A;
+    background: #1E1E1E; /* Black button */
     color: #FFF;
     border-radius: 5px;
     padding: 10px 20px;
-    border: 0;
+    border: 1px solid #FFF;
     cursor: pointer;
     font-family: Fredoka;
     font-size: 18pt;
+}
+
+button:hover {
+    background: #FFF;
+    color: #6b1111; /* Red hover effect */
 }
 
 .disabled {
@@ -39,19 +44,22 @@ button {
 }
 
 .stats {
-    color: #FFF;
+    color: #252323bd;
     font-size: 14pt;
 }
 
 .board-container {
     position: relative;
+    background: #312d2da8; /* Light gray background behind the cards */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
 .board,
 .win {
     border-radius: 5px;
-    box-shadow: 0 25px 50px rgb(33 33 33 / 25%);
-    background: linear-gradient(135deg,  #6f00fc 0%,#fc7900 50%,#fcc700 100%);
+    background: #2b2828bb; /* Matches the container background */
     transition: transform .6s cubic-bezier(0.4, 0.0, 0.2, 1);
     backface-visibility: hidden;
 }
@@ -60,6 +68,7 @@ button {
     padding: 20px;
     display: grid;
     grid-template-columns: repeat(4, auto);
+
     grid-gap: 20px;
 }
 
@@ -84,7 +93,7 @@ button {
     border-radius: 5px;
     width: 100%;
     height: 100%;
-    background: #282A3A;
+    background: #1b1a1adc; /* Black cards */
     transition: transform .6s cubic-bezier(0.4, 0.0, 0.2, 1);
     backface-visibility: hidden;
 }
@@ -95,7 +104,8 @@ button {
     user-select: none;
     text-align: center;
     line-height: 100px;
-    background: #FDF8E6;
+    background: #1f1c1cdc; /* White for card back */
+    color: #470e0e; /* Dark red text */
 }
 
 .card.flipped .card-front {
@@ -113,8 +123,9 @@ button {
     width: 100%;
     height: 100%;
     text-align: center;
-    background: #FDF8E6;
+    background: #1f1d1dc2; /* White win screen */
     transform: rotateY(180deg) rotateZ(50deg);
+    color: #360e0ebd; /* Dark red text */
 }
 
 .win-text {
@@ -123,9 +134,9 @@ button {
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: 21pt;
-    color: #282A3A;
+    color: #3f0e0ea4; /* Dark red */
 }
 
 .highlight {
-    color: #6f00fc;
+    color: #5a5252;
 }
