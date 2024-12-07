@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const session = require('express-session');
+const path = require('path');
 const router = express.Router();
 
 const { getData } = require('./accounts'); // Importă datele
@@ -14,18 +15,9 @@ router.use(session({
     saveUninitialized: true
 }));
 
-
+// Serve static HTML file
 router.get('/', (req, res) => {
-    res.send(`
-        <h1>Login</h1>
-        <form method="POST" action="/login">
-            <label>Email:</label><br>
-            <input type="email" name="email" required><br><br>
-            <label>Parolă:</label><br>
-            <input type="password" name="password" required><br><br>
-            <button type="submit">Login</button>
-        </form>
-    `);
+    res.sendFile(path.join(__dirname, 'login.html'));
 });
 
 router.post('/', (req, res) => {

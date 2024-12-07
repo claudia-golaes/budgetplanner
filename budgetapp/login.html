@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        /* Basic reset */
+        body, h1, form {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: grid;
+            grid-template-rows: 1fr auto 1fr; /* Create 3 vertical sections */
+            justify-items: center; /* Center items horizontally */
+            align-items: center; /* Center items vertically */
+            min-height: 100vh;
+            background-image: url('https://static.vecteezy.com/system/resources/thumbnails/036/055/500/small_2x/ai-generated-black-roses-on-a-black-background-photo.jpg');
+            background-size: cover; /* Ensure the image covers the entire background */
+            background-position: center; /* Center the image */
+            background-repeat: no-repeat; /* Avoid repeating the image */
+            font-family: 'Verdana', sans-serif;
+            color: #FFFFFF;
+            padding: 10px;
+        }
+
+        .header-image {
+            max-width: 150px; /* Logo size */
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 15px;
+            color: #B22222;
+            font-size: 24px;
+        }
+
+        form {
+            background: rgba(40, 40, 40, 0.9); /* Semi-transparent dark background */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.6);
+            max-width: 400px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        label {
+            align-self: flex-start;
+            font-size: 16px;
+            color: #B22222;
+        }
+
+        input[type="email"], input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #B22222;
+            border-radius: 5px;
+            font-size: 14px;
+            background: #1B1B1B;
+            color: #FFFFFF;
+            outline: none;
+        }
+
+        input[type="email"]:focus, input[type="password"]:focus {
+            border-color: #993333;
+            box-shadow: 0 0 5px #993333;
+        }
+
+        input[type="email"]::placeholder, input[type="password"]::placeholder {
+            color: #CCCCCC;
+            font-size: 12px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #B22222;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            font-family: 'Verdana', sans-serif;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #993333;
+        }
+
+        /* Error message styling */
+        .error-message {
+            color: #FFCCCC; /* Light red for error text */
+            font-size: 14px;
+            margin-top: -5px;
+            margin-bottom: 15px;
+            align-self: flex-start; /* Align to the left of the form */
+            display: none; /* Initially hidden */
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="https://upload.wikimedia.org/wikipedia/ro/thumb/1/1d/Logo_Mega_Image.svg/1200px-Logo_Mega_Image.svg.png" 
+             alt="MEGA Logo" class="header-image">
+    </div>
+    <form id="loginForm" method="POST" action="/login">
+        <h1>Login</h1>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" placeholder="Enter your email">
+        <div id="emailError" class="error-message">Please enter a valid email address.</div>
+        <label for="password">Parolă:</label>
+        <input type="password" id="password" name="password" placeholder="Enter your password">
+        <div id="passwordError" class="error-message">Password cannot be empty.</div>
+        <button type="submit">Login</button>
+    </form>
+
+    <script>
+        const form = document.getElementById('loginForm');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const emailError = document.getElementById('emailError');
+        const passwordError = document.getElementById('passwordError');
+
+        form.addEventListener('submit', (event) => {
+            let isValid = true;
+
+            // Custom validation for email
+            if (!emailInput.value.trim()) {
+                emailError.textContent = 'Please complete the email field.';
+                emailError.style.display = 'block';
+                emailInput.style.borderColor = '#993333';
+                isValid = false;
+            } else {
+                emailError.style.display = 'none';
+                emailInput.style.borderColor = '#B22222';
+            }
+
+            // Custom validation for password
+            if (!passwordInput.value.trim()) {
+                passwordError.textContent = 'Please complete the password field.';
+                passwordError.style.display = 'block';
+                passwordInput.style.borderColor = '#993333';
+                isValid = false;
+            } else {
+                passwordError.style.display = 'none';
+                passwordInput.style.borderColor = '#B22222';
+            }
+
+            // Prevent form submission if invalid
+            if (!isValid) {
+                event.preventDefault();
+            }
+        });
+
+        // Clear errors when typing
+        emailInput.addEventListener('input', () => {
+            emailError.style.display = 'none';
+            emailInput.style.borderColor = '#B22222';
+        });
+
+        passwordInput.addEventListener('input', () => {
+            passwordError.style.display = 'none';
+            passwordInput.style.borderColor = '#B22222';
+        });
+    </script>
+</body>
+</html>
