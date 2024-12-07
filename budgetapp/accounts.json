@@ -1,0 +1,167 @@
+[
+    {
+        "account": {
+            "email": "carmen_maria@example.com",
+            "password": "P@ssw0rd!23",
+            "card_id": "01234556"
+        },
+        "receipts": [
+            {
+                "receipt_id": 1,
+                "products": [
+                    {
+                        "produs": "Apples",
+                        "pret": "3.50"
+                    },
+                    {
+                        "produs": "Milk",
+                        "pret": "1.20"
+                    },
+                    {
+                        "produs": "Bread",
+                        "pret": "2.00"
+                    }
+                ]
+            },
+            {
+                "receipt_id": 2,
+                "products": [
+                    {
+                        "produs": "Eggs",
+                        "pret": "4.00"
+                    },
+                    {
+                        "produs": "Cheese",
+                        "pret": "5.50"
+                    },
+                    {
+                        "produs": "Orange Juice",
+                        "pret": "3.00"
+                    }
+                ]
+            }
+        ],
+        "promotions": [
+            {
+                "promotion_id": 1,
+                "promotion_name": "Buy One Get One Free",
+                "details": "Applicable for Apples (1kg)"
+            },
+            {
+                "promotion_id": 2,
+                "promotion_name": "10% Off",
+                "details": "On all Milk purchases over 2L"
+            }
+        ]
+    },
+    {
+        "account": {
+            "email": "claudia_smith@example.com",
+            "password": "SecurePass456!",
+            "card_id": "78901234"
+        },
+        "receipts": [
+            {
+                "receipt_id": 1,
+                "products": [
+                    {
+                        "produs": "Bananas",
+                        "pret": "2.30"
+                    },
+                    {
+                        "produs": "Yogurt",
+                        "pret": "1.80"
+                    },
+                    {
+                        "produs": "Pasta",
+                        "pret": "3.20"
+                    }
+                ]
+            },
+            {
+                "receipt_id": 2,
+                "products": [
+                    {
+                        "produs": "Chicken Breast",
+                        "pret": "6.50"
+                    },
+                    {
+                        "produs": "Tomato Sauce",
+                        "pret": "1.50"
+                    },
+                    {
+                        "produs": "Cheese",
+                        "pret": "4.00"
+                    }
+                ]
+            }
+        ],
+        "promotions": [
+            {
+                "promotion_id": 1,
+                "promotion_name": "Half Price",
+                "details": "50% off on Bananas (per kg)"
+            },
+            {
+                "promotion_id": 2,
+                "promotion_name": "Meal Deal",
+                "details": "Buy Pasta and Tomato Sauce together and save $1"
+            }
+        ]
+    },
+    {
+        "account": {
+            "email": "maria_gomez@example.com",
+            "password": "Maria123@!",
+            "card_id": "56789012"
+        },
+        "receipts": [
+            {
+                "receipt_id": 1,
+                "products": [
+                    {
+                        "produs": "Strawberries",
+                        "pret": "4.00"
+                    },
+                    {
+                        "produs": "Whipping Cream",
+                        "pret": "2.50"
+                    },
+                    {
+                        "produs": "Biscuits",
+                        "pret": "1.80"
+                    }
+                ]
+            },
+            {
+                "receipt_id": 2,
+                "products": [
+                    {
+                        "produs": "Salmon",
+                        "pret": "10.00"
+                    },
+                    {
+                        "produs": "Spinach",
+                        "pret": "2.30"
+                    },
+                    {
+                        "produs": "Lemon",
+                        "pret": "1.00"
+                    }
+                ]
+            }
+        ],
+        "promotions": [
+            {
+                "promotion_id": 1,
+                "promotion_name": "Dessert Special",
+                "details": "Buy Strawberries and Whipping Cream together and save $0.50"
+            },
+            {
+                "promotion_id": 2,
+                "promotion_name": "Healthy Combo",
+                "details": "Save 10% when buying Salmon and Spinach together"
+            }
+        ]
+    }
+]
