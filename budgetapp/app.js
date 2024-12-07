@@ -6,6 +6,7 @@ const port = 3000;
 const loginRoutes = require("./login");
 const profileRoutes = require('./profile'); // Importă funcționalitatea de profil
 const shoppingListRoutes = require("./shoppingList");
+const profileRoutes = require('./profile');
 const { getData } = require("./accounts");
 
 // Middleware pentru sesiuni
