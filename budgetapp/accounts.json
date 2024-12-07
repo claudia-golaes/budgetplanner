@@ -8,42 +8,50 @@
         "receipts": [
             {
                 "receipt_id": 1,
+                "days" :5,
                 "products": [
                     {
                         "produs": "Mere ionatane",
                         "pret": "3.50",
-                        "type" : "mere"
+                        "type" : "mere",
+                        "valability":"7"
                     },
                     {
                         "produs": "Lapte Zuzu",
                         "pret": "1.20",
-                        "type" : "lapte"
+                        "type" : "lapte",
+                        "valability":"10"
                     },
                     {
                         "produs": "Paine Boromir",
                         "pret": "2.00",
-                        "type": "paine"
+                        "type": "paine",
+                        "valability":"15"
                     }
                 ]
             },
             {
                 "receipt_id": 2,
+                "days": 11,
                 "products": [
                     {
                         "produs": "Oua M",
                         "pret": "4.00",
-                        "type": "oua"
+                        "type": "oua",
+                        "valability":"30"
                     },
                     {
                         "produs": "Cascaval Hochland",
                         "pret": "5.50",
-                        "type": "cascaval"
-
+                        "type": "cascaval",
+                        "valability":"10"
+                
                     },
                     {
                         "produs": "Pepsi",
                         "pret": "3.00",
-                        "type": "suc"
+                        "type": "suc",
+                        "valability":"3"
                     }
                 ]
             }
@@ -70,41 +78,49 @@
         "receipts": [
             {
                 "receipt_id": 1,
+                "days": 2,
                 "products": [
                     {
                         "produs": "Banane Premium",
                         "pret": "2.30",
-                        "type": "banane"
+                        "type": "banane",
+                        "valability":"2"
                     },
                     {
                         "produs": "Iaurt Danone",
                         "pret": "1.80",
-                        "type": "iaurt"
+                        "type": "iaurt",
+                        "valability":"7"
                     },
                     {
                         "produs": "Paste Barilla",
                         "pret": "3.20",
-                        "type": "paste"
+                        "type": "paste",
+                        "valability":"100"
                     }
                 ]
             },
             {
                 "receipt_id": 2,
+                "days": 10,
                 "products": [
                     {
                         "produs": "Piept de pui Fragedo",
                         "pret": "6.50",
-                        "type": "carne"
+                        "type": "carne",
+                        "valability":"20"
                     },
                     {
                         "produs": "Sos rosii Barilla",
                         "pret": "1.50",
-                        "type": "sos"
+                        "type": "sos",
+                        "valability":"60"
                     },
                     {
                         "produs": "Cascaval Napolact",
                         "pret": "4.00",
-                        "type": "cascaval"
+                        "type": "cascaval",
+                        "valability":"10"
                     }
                 ]
             }
@@ -131,41 +147,49 @@
         "receipts": [
             {
                 "receipt_id": 1,
+                "days": 9,
                 "products": [
                     {
-                        "produs": "Lamai coaja netratata",
-                        "pret": "4.00",
-                        "type": "lamai"
+                        "produs": "Sunca Sissi",
+                        "pret": "10.00",
+                        "type": "sunca",
+                        "valability":"10"
                     },
                     {
-                        "produs": "Frisca HuLaLa",
-                        "pret": "2.50",
-                        "type": "frisca"
+                        "produs": "Salam Martinel",
+                        "pret": "2.30",
+                        "type": "salam",
+                        "valability":"7"
                     },
                     {
-                        "produs": "Biscuiti Milka",
-                        "pret": "1.80",
-                        "type": "biscuiti"
+                        "produs": "Lamai bio",
+                        "pret": "1.00",
+                        "type": "bio",
+                        "valability":"30"
                     }
                 ]
             },
             {
                 "receipt_id": 2,
+                "days": 24,
                 "products": [
                     {
-                        "produs": "Sunca Sissi",
-                        "pret": "10.00",
-                        "type": "sunca"
+                        "produs": "Sos rosii Alce",
+                        "pret": "0.50",
+                        "type": "sos",
+                        "valability":"27"
                     },
                     {
-                        "produs": "Salam Martinel",
-                        "pret": "2.30",
-                        "type": "salam"
+                        "produs": "Mere galbene",
+                        "pret": "1.50",
+                        "type" : "mere",
+                        "valability":"7"
                     },
                     {
-                        "produs": "Lamai bio",
-                        "pret": "1.00",
-                        "type": "bio"
+                        "produs": "Lapte LaDorna",
+                        "pret": "0.90",
+                        "type" : "lapte",
+                        "valability":"7"
                     }
                 ]
             }
