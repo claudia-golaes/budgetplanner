@@ -4,6 +4,7 @@ const app = express();
 const port = 3000;
 
 const loginRoutes = require("./login");
+const profileRoutes = require('./profile'); // Importă funcționalitatea de profil
 const shoppingListRoutes = require("./shoppingList");
 const { getData } = require("./accounts");
 
@@ -21,6 +22,8 @@ app.use("/login", loginRoutes);
 
 // Rutele pentru lista de cumpărături
 app.use(shoppingListRoutes);
+
+app.use('/profile', profileRoutes);
 
 // Endpoint principal
 app.get("/", (req, res) => {
