@@ -41,7 +41,7 @@ router.post('/', (req, res) => {
 
     if (user) {
         req.session.user = user;
-        res.send(`<h1>Bun venit, ${email}!</h1>`);
+        res.redirect('/');
     } else {
         res.status(401).send('<h1>Email sau parolă incorecte!</h1>');
     }
