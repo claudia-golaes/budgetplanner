@@ -10,6 +10,7 @@ const profileRoutes = require("./profile");
 const shoppingListRoutes = require("./shoppingList");
 const { getData } = require("./accounts");
 const offersRoutes = require("./offers");
+const actualShoppingListRoutes = require("./actualShoppingList");
 
 // Middleware pentru sesiuni
 app.use(
@@ -33,6 +34,8 @@ app.use("/profile", profileRoutes);
 
 // Ruta pentru oferte
 app.use("/offers", offersRoutes);
+
+app.use(actualShoppingListRoutes);
 
 // Ruta pentru jocul Memory
 app.get("/memory-game", (req, res) => {
