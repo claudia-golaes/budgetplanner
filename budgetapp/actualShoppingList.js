@@ -18,7 +18,6 @@ router.use((req, res, next) => {
     next();
 });
 
-// Render the shopping list dashboard
 // Add a product to the shopping list
 router.post("/shopping-list/add", express.json(), (req, res) => {
     const { index } = req.body;
@@ -40,6 +39,11 @@ router.post("/shopping-list/add", express.json(), (req, res) => {
             // If the product doesn't exist, add it with a quantity of 1
             req.session.shoppingList.push({ ...product, quantity: 1 });
         }
+
+        // Update the budget by subtracting the cost of the added product
+        const productCost = product.pret;
+        req.session.user.newBudget = req.session.user.newBudget || req.session.user.budget; // initialize if not set
+        req.session.user.newBudget -= productCost; // Decrease the budget by the product price
     }
 
     res.sendStatus(200);
@@ -53,9 +57,11 @@ router.get("/shopping-list", (req, res) => {
 
     const shoppingList = req.session.shoppingList;
     const products = getProducts(); // Function to get the product list
+    const newBudget = req.session.user.newBudget || req.session.user.budget || "Nespecificat"; // Get the new or original budget
 
     res.send(`
         <h1>Shopping List Dashboard</h1>
+        <p><strong>Buget curent:</strong> ${newBudget} RON</p>
         <div style="display: flex; justify-content: space-between;">
             <!-- Current Shopping List -->
             <div style="width: 45%; padding: 10px; border: 1px solid #ccc;">
@@ -77,7 +83,7 @@ router.get("/shopping-list", (req, res) => {
             </div>
 
             <!-- Product Catalog -->
-            <div style="width: 45%; padding: 10px; border: 1px solid #ccc; display: none;" id="productCatalog">
+            <div style="width: 45%; padding: 10px; border: 1px solid #ccc;">
                 <h2>Product Catalog</h2>
                 <input 
                     type="text" 
@@ -150,8 +156,6 @@ router.get("/shopping-list", (req, res) => {
     `);
 });
 
-
-
 // Remove a product from the shopping list
 router.post("/shopping-list/remove", express.json(), (req, res) => {
     const { index } = req.body;
@@ -165,9 +169,12 @@ router.post("/shopping-list/remove", express.json(), (req, res) => {
         } else {
             req.session.shoppingList.splice(index, 1);
         }
-    }
 
-    res.sendStatus(200);
+        // Update the budget by adding the cost of the removed product
+        req.session.user.newBudget = parseFloat(req.session.user.newBudget) + parseFloat(product.pret);
+
+        res.sendStatus(200);
+    }
 });
 
 module.exports = router;
