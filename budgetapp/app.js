@@ -4,8 +4,11 @@ const app = express();
 const port = 3000;
 
 const loginRoutes = require("./login");
+const profileRoutes = require('./profile'); // Importă funcționalitatea de profil
 const shoppingListRoutes = require("./shoppingList");
+//const profileRoutes = require('./profile');
 const { getData } = require("./accounts");
+const offersRoutes = require("./offers");
 
 // Middleware pentru sesiuni
 app.use(
@@ -21,6 +24,11 @@ app.use("/login", loginRoutes);
 
 // Rutele pentru lista de cumpărături
 app.use(shoppingListRoutes);
+
+app.use('/profile', profileRoutes);
+
+// ruta oferte
+app.use("/offers", offersRoutes);
 
 // Endpoint principal
 app.get("/", (req, res) => {
