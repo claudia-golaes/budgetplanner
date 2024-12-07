@@ -1,0 +1,47 @@
+[
+    {
+        "nume": "Tarta cu mere si scortisoara",
+        "descriere": "O delicioasă tartă de mere, perfectă pentru desert.",
+        "produse_folosite": {
+            "Mere ionatane": 3,
+            "Lapte Zuzu": 1,
+            "Paine Boromir": 1,
+            "Oua M": 2
+        }
+    },
+    {
+        "nume": "Paste cu sos de rosii si cascaval",
+        "descriere": "Paste cu sos de roșii și un strat generos de cașcaval topit.",
+        "produse_folosite": {
+            "Paste Barilla": 1,
+            "Sos rosii Barilla": 1,
+            "Cascaval Hochland": 1
+        }
+    },
+    {
+        "nume": "Salata de pui cu fructe",
+        "descriere": "O salată ușoară cu piept de pui, mere și dressing ușor.",
+        "produse_folosite": {
+            "Piept de pui Fragedo": 1,
+            "Mere galbene": 2,
+            "Lamai bio": 1
+        }
+    },
+    {
+        "nume": "Desert cu biscuiți și frișcă",
+        "descriere": "Un desert rapid cu biscuiți stratificați și frișcă.",
+        "produse_folosite": {
+            "Biscuiti Milka": 1,
+            "Frisca DrOetker": 1
+        }
+    },
+    {
+        "nume": "Omletă cu șuncă și cașcaval",
+        "descriere": "O omletă consistentă, perfectă pentru micul dejun.",
+        "produse_folosite": {
+            "Oua L": 2,
+            "Cascaval Napolact": 1,
+            "Sunca Sissi": 1
+        }
+    }
+]
