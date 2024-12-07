@@ -10,6 +10,11 @@ const profileRoutes = require("./profile");
 const shoppingListRoutes = require("./shoppingList");
 const { getData } = require("./accounts");
 const offersRoutes = require("./offers");
+const generalOffersRoutes = require("./general_offers");
+const budgetRoutes = require("./budget"); // Importă ruta bugetului
+
+app.use(express.urlencoded({ extended: true })); // Middleware pentru formulare
+app.use(express.json());
 
 // Middleware pentru sesiuni
 app.use(
@@ -24,15 +29,15 @@ app.use(
 app.use(express.static(__dirname));
 // Rutele pentru login
 app.use("/login", loginRoutes);
-
 // Rutele pentru lista de cumpărături
 app.use(shoppingListRoutes);
-
 // Rutele pentru profil
 app.use("/profile", profileRoutes);
-
 // Ruta pentru oferte
 app.use("/offers", offersRoutes);
+app.use("/general-offers", generalOffersRoutes);
+app.use("/budget", budgetRoutes);
+
 
 // Ruta pentru jocul Memory
 app.get("/memory-game", (req, res) => {
