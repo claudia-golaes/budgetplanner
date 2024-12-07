@@ -1,11 +1,15 @@
 const express = require("express");
 const session = require("express-session");
+const path = require("path"); // Pentru a gestiona căi de fișiere
 const app = express();
 const port = 3000;
 
+// Importă rutele existente
 const loginRoutes = require("./login");
+const profileRoutes = require("./profile");
 const shoppingListRoutes = require("./shoppingList");
 const { getData } = require("./accounts");
+const offersRoutes = require("./offers");
 
 // Middleware pentru sesiuni
 app.use(
@@ -16,11 +20,24 @@ app.use(
     })
 );
 
+// Middleware pentru servirea fișierelor statice (în cazul în care mai sunt alte resurse CSS/JS de accesat)
+app.use(express.static(__dirname));
 // Rutele pentru login
 app.use("/login", loginRoutes);
 
 // Rutele pentru lista de cumpărături
 app.use(shoppingListRoutes);
+
+// Rutele pentru profil
+app.use("/profile", profileRoutes);
+
+// Ruta pentru oferte
+app.use("/offers", offersRoutes);
+
+// Ruta pentru jocul Memory
+app.get("/memory-game", (req, res) => {
+    res.sendFile(path.join(__dirname, "memory.html")); // Servește fișierul HTML pentru joc
+});
 
 // Endpoint principal
 app.get("/", (req, res) => {
@@ -43,15 +60,20 @@ app.get("/", (req, res) => {
         productList += `<p>Produs: ${product.produs}, Preț: ${product.pret}</p>`;
     });
 
-    const loginButton = `
-        <form action="/login" method="get">
-            <button type="submit">Login</button>
-        </form>
-    `;
-
-    res.send(emailList + productList + loginButton);
+    if (req.session.user) {
+        const welcomeMessage = `<h2>Bun venit, ${req.session.user.account.email}!</h2>`;
+        res.send(welcomeMessage + emailList + productList);
+    } else {
+        const loginButton = `
+            <form action="/login" method="get">
+                <button type="submit">Login</button>
+            </form>
+        `;
+        res.send(emailList + productList + loginButton);
+    }
 });
 
+// Pornirea serverului
 app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`);
+    console.log(`App running at http://localhost:${port}`);
 });
