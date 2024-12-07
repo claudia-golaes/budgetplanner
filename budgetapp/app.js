@@ -5,6 +5,7 @@ const port = 3000;
 
 const loginRoutes = require("./login");
 const shoppingListRoutes = require("./shoppingList");
+const profileRoutes = require('./profile');
 const { getData } = require("./accounts");
 
 // Middleware pentru sesiuni
@@ -21,6 +22,8 @@ app.use("/login", loginRoutes);
 
 // Rutele pentru lista de cumpărături
 app.use(shoppingListRoutes);
+
+app.use('/profile', profileRoutes);
 
 // Endpoint principal
 app.get("/", (req, res) => {
