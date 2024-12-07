@@ -10,15 +10,16 @@ const profileRoutes = require("./profile");
 const shoppingListRoutes = require("./shoppingList");
 const { getData } = require("./accounts");
 const offersRoutes = require("./offers");
-<<<<<<< HEAD
 const generalOffersRoutes = require("./general_offers");
 const budgetRoutes = require("./budget"); // Importă ruta bugetului
+const recognizeRecipesRoutes = require("./leftovers"); // Importă ruta pentru recunoaștere
+
 
 app.use(express.urlencoded({ extended: true })); // Middleware pentru formulare
 app.use(express.json());
-=======
 const actualShoppingListRoutes = require("./actualShoppingList");
->>>>>>> dabced7498d18a32c9d89f6229ededfe78478582
+
+
 
 // Middleware pentru sesiuni
 app.use(
@@ -41,6 +42,8 @@ app.use("/profile", profileRoutes);
 app.use("/offers", offersRoutes);
 app.use("/general-offers", generalOffersRoutes);
 app.use("/budget", budgetRoutes);
+app.use("/leftovers", recognizeRecipesRoutes); // Înregistrează ruta în Express
+
 
 
 app.use(actualShoppingListRoutes);

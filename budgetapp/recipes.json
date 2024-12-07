@@ -1,0 +1,29 @@
+{
+    "recipes": [
+        {
+            "name": "Omletă cu legume",
+            "ingredients": ["ouă", "ardei", "ceapă", "roșii", "sare", "piper"],
+            "instructions": "Bate ouăle, adaugă legumele tocate și prăjește într-o tigaie."
+        },
+        {
+            "name": "Supă de pui",
+            "ingredients": ["carne de pui", "morcovi", "țelină", "ceapă", "sare", "piper"],
+            "instructions": "Fierbe carnea și legumele, adaugă condimentele și servește fierbinte."
+        },
+        {
+            "name": "Salată de fructe",
+            "ingredients": ["mere", "banane", "portocale", "miere"],
+            "instructions": "Taie fructele și amestecă-le cu mierea."
+        },
+        {
+            "name": "Pasta cu sos de roșii",
+            "ingredients": ["paste", "roșii", "ceapă", "sare", "ulei de măsline", "basilic"],
+            "instructions": "Fierbe pastele, pregătește un sos cu roșii și condimente și amestecă cu pastele."
+        },
+        {
+            "name": "Omletă cu brânză",
+            "ingredients": ["ouă", "brânză", "sare", "piper"],
+            "instructions": "Bate ouăle cu brânza și prăjește amestecul într-o tigaie."
+        }
+    ]
+}

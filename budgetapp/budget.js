@@ -53,7 +53,7 @@ router.get("/", isAuthenticated, (req, res) => {
             }
         </script>
     `);
-});
+});          
 
 // Endpoint pentru actualizarea bugetului săptămânal
 router.post("/", isAuthenticated, (req, res) => {

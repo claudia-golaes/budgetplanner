@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recunoaștere Produse și Rețete</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script> <!-- TensorFlow.js -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 20px;
+        }
+        #previewImage {
+            max-width: 100%;
+            height: auto;
+            display: none;
+        }
+        #results {
+            margin-top: 20px;
+        }
+        .recipe {
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px;
+            margin: 10px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Încărcați o imagine cu produsele din frigider</h1>
+    <input type="file" id="imageInput" accept="image/*" />
+    <button onclick="handleImage()">Recunoaște produsele</button>
+    <button onclick="generateRecipes()">Generează rețete</button>
+
+    <img id="previewImage" />
+
+    <div id="results"></div>
+    <div id="ingredientsSelection"></div>
+    <div id="recipes"></div>
+
+    <script>
+        let detectedIngredients = ["ouă", "lămâi"]; // Hardcodăm ingredientele (ouă și lămâi)
+        let selectedIngredients = []; // Ingrediente selectate de utilizator pentru a filtra rețetele
+
+        // 1. Afișează produsele detectate și permite selectarea acestora
+        function displayDetectedIngredients() {
+            const resultDiv = document.getElementById('results');
+            resultDiv.innerHTML = `
+                <h2>Produse detectate:</h2>
+                <ul>
+                    ${detectedIngredients.map(ingredient => {
+                        return `
+                            <li>
+                                <input type="checkbox" id="${ingredient}" value="${ingredient}" onchange="updateSelectedIngredients()">
+                                <label for="${ingredient}">${ingredient}</label>
+                            </li>
+                        `;
+                    }).join('')}
+                </ul>
+            `;
+        }
+
+        // 2. Actualizează ingredientele selectate pe măsură ce utilizatorul bifează
+        function updateSelectedIngredients() {
+            selectedIngredients = []; // Resetăm lista de ingrediente selectate
+            detectedIngredients.forEach(ingredient => {
+                const checkbox = document.getElementById(ingredient);
+                if (checkbox.checked) {
+                    selectedIngredients.push(ingredient);
+                }
+            });
+
+            // Afișăm ingredientele selectate actualizate
+            displaySelectedIngredients();
+        }
+
+        // 3. Afișează ingredientele selectate
+        function displaySelectedIngredients() {
+            const selectedDiv = document.getElementById('ingredientsSelection');
+            selectedDiv.innerHTML = `<h2>Ingrediente selectate:</h2><ul>`;
+            selectedIngredients.forEach(ingredient => {
+                selectedDiv.innerHTML += `<li>${ingredient}</li>`;
+            });
+            selectedDiv.innerHTML += `</ul>`;
+        }
+
+        // 4. Compară ingredientele și găsește rețetele
+        function getRecipes(ingredients) {
+            const recipes = [
+                {
+                    "name": "Omletă cu legume",
+                    "ingredients": ["ouă", "ardei", "ceapă", "roșii", "sare", "piper"],
+                    "instructions": "Bate ouăle, adaugă legumele tocate și prăjește într-o tigaie."
+                },
+                {
+                    "name": "Supă de pui",
+                    "ingredients": ["carne de pui", "morcovi", "țelină", "ceapă", "sare", "piper"],
+                    "instructions": "Fierbe carnea și legumele, adaugă condimentele și servește fierbinte."
+                },
+                {
+                    "name": "Smoothie cu lămâi",
+                    "ingredients": ["lămâi", "miere", "apă"],
+                    "instructions": "Stoarce lămâile, amestecă cu miere și apă."
+                },
+                {
+                    "name": "Salată de fructe",
+                    "ingredients": ["lămâi", "mere", "banane", "portocale", "miere"],
+                    "instructions": "Taie fructele și amestecă-le cu mierea."
+                }
+            ];
+
+            // Filtrăm rețetele în funcție de ingredientele selectate
+            return recipes.filter(recipe => {
+                return recipe.ingredients.some(ingredient => ingredients.includes(ingredient));
+            });
+        }
+
+        // 5. Afișează rețetele sugerate
+        function displayRecipes(recipes) {
+            const recipesDiv = document.getElementById('recipes');
+            recipesDiv.innerHTML = recipes.map(recipe => `
+                <div class="recipe">
+                    <h3>${recipe.name}</h3>
+                    <p><strong>Ingrediente necesare:</strong> ${recipe.ingredients.join(", ")}</p>
+                    <p><strong>Ingrediente lipsă:</strong> ${recipe.missingIngredients ? recipe.missingIngredients.join(", ") : "Niciun ingredient lipsă"}</p>
+                    <p><strong>Instrucțiuni:</strong> ${recipe.instructions}</p>
+                </div>
+            `).join("");
+        }
+
+        // 6. Generează rețetele pe baza ingredientelor selectate
+        function generateRecipes() {
+            if (selectedIngredients.length > 0) {
+                // Afișează ingredientele selectate
+                displaySelectedIngredients();
+
+                // Obține rețetele pe baza ingredientelor selectate
+                const recipes = getRecipes(selectedIngredients);
+                displayRecipes(recipes);
+            } else {
+                alert("Nu au fost selectate ingrediente pentru generarea rețetelor.");
+            }
+        }
+
+        // 7. Funcția de procesare a imaginii (nu mai este necesară pentru simulari)
+        function handleImage() {
+            const input = document.getElementById('imageInput');
+            const preview = document.getElementById('previewImage');
+            const file = input.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    preview.src = reader.result;
+                    preview.style.display = 'block';
+                    displayDetectedIngredients(); // Afișăm ingredientele detectate
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
+</body>
+</html>
