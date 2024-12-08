@@ -1,0 +1,177 @@
+[
+    {
+        "produs": "Mere ionatane",
+        "pret": "3.50",
+        "type" : "mere",
+        "valability":"7"
+    },
+    {
+        "produs": "Lapte Zuzu",
+        "pret": "1.20",
+        "type" : "lapte",
+        "valability":"10"
+    },
+    {
+        "produs": "Paine Boromir",
+        "pret": "2.00",
+        "type": "paine",
+        "valability":"15"
+    },
+    {
+        "produs": "Oua M",
+        "pret": "4.00",
+        "type": "oua",
+        "valability":"30"
+    },
+    {
+        "produs": "Cascaval Hochland",
+        "pret": "5.50",
+        "type": "cascaval",
+        "valability":"10"
+
+    },
+    {
+        "produs": "Pepsi",
+        "pret": "3.00",
+        "type": "suc",
+        "valability":"3"
+    },
+    {
+        "produs": "Banane Premium",
+        "pret": "2.30",
+        "type": "banane",
+        "valability":"2"
+    },
+    {
+        "produs": "Iaurt Danone",
+        "pret": "1.80",
+        "type": "iaurt",
+        "valability":"7"
+    },
+    {
+        "produs": "Paste Barilla",
+        "pret": "3.20",
+        "type": "paste",
+        "valability":"100"
+    },
+    {
+        "produs": "Piept de pui Fragedo",
+        "pret": "6.50",
+        "type": "carne",
+        "valability":"20"
+    },
+    {
+        "produs": "Sos rosii Barilla",
+        "pret": "1.50",
+        "type": "sos",
+        "valability":"60"
+    },
+    {
+        "produs": "Cascaval Napolact",
+        "pret": "4.00",
+        "type": "cascaval",
+        "valability":"10"
+    },
+    {
+        "produs": "Sunca Sissi",
+        "pret": "10.00",
+        "type": "sunca",
+        "valability":"10"
+    },
+    {
+        "produs": "Salam Martinel",
+        "pret": "2.30",
+        "type": "salam",
+        "valability":"7"
+    },
+    {
+        "produs": "Lamai bio",
+        "pret": "1.00",
+        "type": "bio",
+        "valability":"30"
+    },
+    {
+        "produs": "Lamai coaja netratata",
+        "pret": "4.00",
+        "type": "lamai",
+        "valability":"27"
+    },
+    {
+        "produs": "Frisca HuLaLa",
+        "pret": "2.50",
+        "type": "frisca",
+        "valability":"7"
+    },
+    {
+        "produs": "Biscuiti Milka",
+        "pret": "1.80",
+        "type": "biscuiti",
+        "valability":"17"
+    },
+    {
+        "produs": "Frisca DrOetker",
+        "pret": "1.50",
+        "type": "frisca",
+        "valability":"7"
+    },
+    {
+        "produs": "Biscuiti Leibniz",
+        "pret": "2.80",
+        "type": "biscuiti",
+        "valability":"17"
+    },
+    {
+        "produs": "Sunca Caroli",
+        "pret": "5.00",
+        "type": "sunca",
+        "valability":"7"
+    },
+    {
+        "produs": "Salam Sergiana",
+        "pret": "3.30",
+        "type": "salam",
+        "valability":"7"
+    },
+    {
+        "produs": "Paste Panzani",
+        "pret": "2.20",
+        "type": "paste",
+        "valability":"67"
+    },
+    {
+        "produs": "Piept de pui Cocorico",
+        "pret": "4.50",
+        "type": "carne",
+        "valability":"17"
+    },
+    {
+        "produs": "Sos rosii Alce",
+        "pret": "0.50",
+        "type": "sos",
+        "valability":"27"
+    },
+    {
+        "produs": "Mere galbene",
+        "pret": "1.50",
+        "type" : "mere",
+        "valability":"7"
+    },
+    {
+        "produs": "Lapte LaDorna",
+        "pret": "0.90",
+        "type" : "lapte",
+        "valability":"7"
+    },
+    {
+        "produs": "Paine VelPitar",
+        "pret": "1.00",
+        "type": "paine",
+        "valability":"12"
+    },
+    {
+        "produs": "Oua L",
+        "pret": "6.00",
+        "type": "oua",
+        "valability":"17"
+    }
+]
