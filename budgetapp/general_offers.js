@@ -1,25 +1,31 @@
 const express = require("express");
 const router = express.Router();
-const generalPromotions = require("./general_offers.json"); // Importă fișierul JSON
+const fs = require('fs');
+const path = require('path');
+const generalPromotions = require("./general_offers.json");
 
 router.get("/", (req, res) => {
-    let promotionsHtml = "<h1>Promoții Generale</h1>";
+    // Read the HTML template
+    const template = fs.readFileSync(path.join(__dirname, 'general_offers.html'), 'utf8');
+    
+    // Generate promotions HTML
+    let promotionsHTML = '';
     generalPromotions.promotions.forEach(promotion => {
-        promotionsHtml += `
-            <div>
-                <h2>${promotion.promotion_name}</h2>
+        promotionsHTML += `
+            <div class="promotion-card">
+                <h2>
+                    <i class="fas fa-percent"></i>
+                    ${promotion.promotion_name}
+                </h2>
                 <p>${promotion.details}</p>
             </div>
         `;
     });
 
-    promotionsHtml += `
-        <form action="/" method="get">
-            <button type="submit">Înapoi la pagina principală</button>
-        </form>
-    `;
-
-    res.send(promotionsHtml);
+    // Replace placeholder in template with actual promotions
+    const finalHTML = template.replace('<!--PROMOTIONS_PLACEHOLDER-->', promotionsHTML);
+    
+    res.send(finalHTML);
 });
 
 module.exports = router;
