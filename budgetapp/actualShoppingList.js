@@ -184,7 +184,7 @@ router.get("/shopping-list", (req, res) => {
         })
         .then(data => {
             if (data.cheaperProduct) {
-                if (confirm(data.message)) {
+                if (confirm(dataAdd.message)) {
                     // If the user confirms, add the cheaper product
                     addToShoppingList(data.cheaperProduct.index, true);
                 }

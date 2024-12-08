@@ -21,10 +21,6 @@ const actualShoppingListRoutes = require("./actualShoppingList");
 
 
 
-
-const actualShoppingListRoutes = require("./actualShoppingList");
-
-
 // Middleware pentru sesiuni
 app.use(
     session({
