@@ -303,6 +303,21 @@
                 align-items: center;
             }
         }
+        .loyalty-points {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background-color: #ffd700;
+    padding: 5px 10px;
+    border-radius: 15px;
+    color: #333;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.loyalty-points i {
+    color: #e31837;
+}
     </style>
 </head>
 <body>
@@ -322,6 +337,10 @@
             </button>
         </div>
     </nav>
+    <div class="loyalty-points">
+        <i class="fas fa-star"></i>
+        <span id="loyaltyPoints">45</span> puncte
+    </div>
 
     <div id="menuDropdown" class="dropdown-content">
         <a href="/profile"><i class="fas fa-user"></i> Profil</a>
@@ -347,6 +366,14 @@
             <a href="/budget" class="main-button">
                 <i class="fas fa-wallet"></i>
                 Buget
+            </a> 
+            <a href="/memory-game" class="main-button">
+                <i class="fas fa-puzzle-piece"></i>
+                Play & Win
+            </a> 
+            <a href="/leftovers" class="main-button">
+                <i class="fas fa-recycle"></i>
+                No Waste Recipes
             </a> 
         </div>
     </div>
@@ -374,6 +401,17 @@
 
 
     <script>
+        function updateLoyaltyPoints() {
+    fetch('/api/loyalty-points')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('loyaltyPoints').textContent = data.points;
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+// Actualizează punctele la încărcarea paginii
+document.addEventListener('DOMContentLoaded', updateLoyaltyPoints);
         function toggleMenu() {
             document.getElementById("menuDropdown").classList.toggle("show");
         }

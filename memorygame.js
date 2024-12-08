@@ -15,6 +15,31 @@ const state = {
     loop: null
 }
 
+async function updateLoyaltyPoints() {
+    try {
+        const response = await fetch('/api/loyalty-points/add', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            // Adaugă mesajul despre punctele câștigate în fereastra de victorie
+            const winMessage = document.querySelector('.win-text');
+            if (winMessage) {
+                winMessage.innerHTML += `<br/>
+                    <span class="highlight">+5</span> puncte de fidelitate!<br/>
+                    Total: <span class="highlight">${data.points}</span> puncte`;
+            }
+        }
+    } catch (error) {
+        console.error('Error updating loyalty points:', error);
+    }
+}
+
 const shuffle = array => {
     const clonedArray = [...array]
 
@@ -53,16 +78,16 @@ const generateGame = () => {
     const emojis = ['🥔', '🍒', '🥑', '🌽', '🥕', '🍇', '🍉', '🍌', '🥭', '🍍']
     const picks = pickRandom(emojis, (dimensions * dimensions) / 2) 
     const items = shuffle([...picks, ...picks])
-    const cards = 
+    const cards = `
         <div class="board" style="grid-template-columns: repeat(${dimensions}, auto)">
-            ${items.map(item => 
+            ${items.map(item => `
                 <div class="card">
                     <div class="card-front"></div>
                     <div class="card-back">${item}</div>
                 </div>
-            ).join('')}
+            `).join('')}
        </div>
-    
+    `
     
     const parser = new DOMParser().parseFromString(cards, 'text/html')
 
@@ -76,8 +101,8 @@ const startGame = () => {
     state.loop = setInterval(() => {
         state.totalTime++
 
-        selectors.moves.innerText = ${state.totalFlips} moves
-        selectors.timer.innerText = time: ${state.totalTime} sec
+        selectors.moves.innerText = ` ${state.totalFlips} moves`
+        selectors.timer.innerText = `time: ${state.totalTime} sec`
     }, 1000)
 }
 
@@ -118,15 +143,15 @@ const flipCard = card => {
     if (!document.querySelectorAll('.card:not(.flipped)').length) {
         setTimeout(() => {
             selectors.boardContainer.classList.add('flipped')
-            selectors.win.innerHTML = 
+            selectors.win.innerHTML = `
                 <span class="win-text">
                     You won!<br />
                     with <span class="highlight">${state.totalFlips}</span> moves<br />
                     under <span class="highlight">${state.totalTime}</span> seconds
                 </span>
-            
-
+            `
             clearInterval(state.loop)
+            updateLoyaltyPoints();
         }, 1000)
     }
 }

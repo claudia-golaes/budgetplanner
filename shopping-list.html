@@ -52,6 +52,47 @@
             align-items: center;
         }
 
+        .suggestions-section {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .suggestions-title {
+            color: var(--mega-red);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 2px solid var(--mega-red);
+            padding-bottom: 10px;
+        }
+
+        .suggestion-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            transition: background-color 0.2s;
+        }
+
+        .suggestion-item:last-child {
+            border-bottom: none;
+        }
+
+        .suggestion-message {
+            flex: 1;
+            margin-right: 15px;
+        }
+
+        .suggestion-actions {
+            display: flex;
+            gap: 10px;
+        }
+
         .dashboard {
             display: flex;
             flex-direction: column;
@@ -137,6 +178,34 @@
             background-color: #ff4444;
         }
 
+        .btn-add-suggestion {
+            background-color: #28a745;
+        }
+
+        .btn-add-suggestion:hover {
+            background-color: #218838;
+        }
+
+        .btn-dismiss {
+            background-color: #6c757d;
+        }
+
+        .btn-dismiss:hover {
+            background-color: #5a6268;
+        }
+
+        .btn-complete {
+            background-color: #28a745;
+            padding: 12px 24px;
+            font-size: 1.1em;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .btn-complete:hover {
+            background-color: #218838;
+        }
+
         .search-container {
             margin-bottom: 20px;
             position: relative;
@@ -195,11 +264,9 @@
             margin-bottom: 10px;
         }
 
-        .back-section {
-            padding: 10px;
-            margin-bottom: 20px;
+        .completion-section {
+            margin-top: 20px;
         }
-        
 
         @media (max-width: 767px) {
             .catalog-toggle {
@@ -227,6 +294,15 @@
             <span id="currentBudget">Loading...</span>
         </div>
 
+        <div class="suggestions-section">
+            <h2 class="suggestions-title">
+                <i class="fas fa-lightbulb"></i> Sugestii pentru tine
+            </h2>
+            <div id="suggestionsList">
+                <!-- Suggestions will be inserted here -->
+            </div>
+        </div>
+
         <button class="btn catalog-toggle" onclick="toggleCatalog()">
             <i class="fas fa-list"></i> Toggle Catalog
         </button>
@@ -237,6 +313,11 @@
                 <div id="shoppingList">
                     <!-- Shopping list items will be inserted here -->
                 </div>
+                <!-- <div class="completion-section">
+                    <button class="btn btn-complete" onclick="completeShoppingList()">
+                        <i class="fas fa-check"></i> Finalizează cumpărăturile
+                    </button>
+                </div> -->
             </div>
 
             <div class="product-catalog-section card">
@@ -276,6 +357,9 @@
                 
                 // Update product catalog
                 updateProductList(data.products);
+
+                // Update suggestions
+                updateSuggestions(data.suggestions);
             } catch (error) {
                 showNotification('Error loading data', 'error');
             }
@@ -317,6 +401,68 @@
             `).join('');
         }
 
+        // function updateSuggestions(suggestions) {
+        //     const container = document.getElementById('suggestionsList');
+        //     if (!suggestions || suggestions.length === 0) {
+        //         container.innerHTML = '<div class="empty-state"><p>Nu există sugestii momentan</p></div>';
+        //         return;
+        //     }
+
+        //     container.innerHTML = suggestions.map(suggestion => `
+        //         <div class="suggestion-item">
+        //             <div class="suggestion-message">
+        //                 ${suggestion.message}
+        //             </div>
+        //             <div class="suggestion-actions">
+        //                 <button class="btn btn-add-suggestion" onclick="addSuggestedProduct('${suggestion.product}', ${suggestion.quantity})">
+        //                     <i class="fas fa-plus"></i> Adaugă
+        //                 </button>
+        //                 <button class="btn btn-dismiss" onclick="dismissSuggestion(this)">
+        //                     <i class="fas fa-times"></i> Nu acum
+        //                 </button>
+        //             </div>
+        //         </div>
+        //     `).join('');
+        // }
+
+        function updateSuggestions(suggestions) {
+    const container = document.getElementById('suggestionsList');
+    // Sugestii fixe
+    const fixedSuggestions = [
+        {
+            product: "Pepsi",
+            message: "Doriți să adăugați Pepsi în listă?",
+            quantity: 1
+        },
+        {
+            product: "Oua M",
+            message: "Doriți să adăugați Oua M în listă?",
+            quantity: 1
+        },
+        {
+            product: "Iaurt Danone",
+            message: "Doriți să adăugați Iaurt Danone în listă?",
+            quantity: 1
+        }
+    ];
+
+    container.innerHTML = fixedSuggestions.map(suggestion => `
+        <div class="suggestion-item">
+            <div class="suggestion-message">
+                ${suggestion.message}
+            </div>
+            <div class="suggestion-actions">
+                <button class="btn btn-add-suggestion" onclick="addSuggestedProduct('${suggestion.product}', ${suggestion.quantity})">
+                    <i class="fas fa-plus"></i> Adaugă
+                </button>
+                <button class="btn btn-dismiss" onclick="dismissSuggestion(this)">
+                    <i class="fas fa-times"></i> Nu acum
+                </button>
+            </div>
+        </div>
+    `).join('');
+}
+
         function showNotification(message, type = 'success') {
             const notification = document.getElementById('notification');
             notification.textContent = message;
@@ -341,13 +487,16 @@
                         if (data.cheaperProduct) {
                             if (confirm(data.message)) {
                                 await addToShoppingList(data.cheaperProduct.index, true);
+                            } else {
+                                await fetch('/shopping-list/add', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({ index, declinedSwitch: true }),
+                                });
                             }
-                        }else{
-                            await addToShoppingList(data.product.index, true);
                         }
                     }
                     await loadData();
-                    
                     showNotification('Produs adăugat cu succes!');
                 } else {
                     throw new Error('Failed to add product');
@@ -356,6 +505,42 @@
                 showNotification('A apărut o eroare la adăugarea produsului.', 'error');
             }
         }
+        async function addSuggestedProduct(productName, quantity) {
+    try {
+        const response = await fetch('/api/shopping-list/data');
+        const data = await response.json();
+        const products = data.products;
+        
+        // Găsește indexul produsului în lista completă de produse
+        const productIndex = products.findIndex(p => p.produs.toLowerCase() === productName.toLowerCase());
+        
+        if (productIndex !== -1) {
+            // Adaugă produsul în listă folosind funcția existentă addToShoppingList
+            await addToShoppingList(productIndex);
+            showNotification(`${productName} a fost adăugat în listă!`);
+            
+            // Ascunde sugestia după ce a fost adăugată
+            const suggestionItems = document.querySelectorAll('.suggestion-item');
+            suggestionItems.forEach(item => {
+                if (item.querySelector('.suggestion-message').textContent.includes(productName)) {
+                    item.remove();
+                }
+            });
+        } else {
+            showNotification(`Nu s-a găsit produsul ${productName} în catalog.`, 'error');
+        }
+    } catch (error) {
+        console.error('Error adding suggested product:', error);
+        showNotification('Eroare la adăugarea produsului sugerat', 'error');
+    }
+}
+        function dismissSuggestion(button) {
+    button.closest('.suggestion-item').remove();
+    if (document.querySelectorAll('.suggestion-item').length === 0) {
+        document.getElementById('suggestionsList').innerHTML = 
+            '<div class="empty-state"><p>Nu există sugestii momentan</p></div>';
+    }
+}
 
         async function removeFromShoppingList(index) {
             try {
@@ -373,6 +558,26 @@
                 }
             } catch (error) {
                 showNotification('A apărut o eroare la eliminarea produsului.', 'error');
+            }
+        }
+
+        async function completeShoppingList() {
+            try {
+                const response = await fetch('/api/shopping-list/complete', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                
+                if (response.ok) {
+                    showNotification('Cumpărăturile au fost finalizate cu succes!');
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1500);
+                } else {
+                    throw new Error('Failed to complete shopping');
+                }
+            } catch (error) {
+                showNotification('Eroare la finalizarea cumpărăturilor', 'error');
             }
         }
 
@@ -418,8 +623,6 @@
 
         // Polling for updates (optional, can be replaced with WebSocket)
         setInterval(loadData, 30000); // Update every 30 seconds
-
     </script>
-        
 </body>
 </html>

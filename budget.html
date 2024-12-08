@@ -3,227 +3,245 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MegaImage - Buget Săptămânal</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <title>Buget Săptămânal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        :root {
-            --mega-red: #e60012;
-            --mega-black: #1a1a1a;
-            --mega-gray: #f5f5f5;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Arial', sans-serif;
-        }
-
         body {
-            background-color: var(--mega-gray);
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
             padding: 20px;
+            background-color: #f5f5f5;
         }
-
-        .container {
+        .content {
             max-width: 800px;
             margin: 0 auto;
             background: white;
             padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-
         h1 {
-            color: var(--mega-red);
-            margin-bottom: 20px;
+            color: #e31837;
+            margin-bottom: 30px;
             text-align: center;
         }
-
         .user-info {
             margin-bottom: 20px;
             padding: 15px;
-            background: var(--mega-black);
-            color: white;
-            border-radius: 4px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            border-left: 4px solid #e31837;
         }
-
         .budget-display {
-            font-size: 1.2em;
-            margin: 20px 0;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .budget-display p {
             padding: 15px;
             background: #f8f9fa;
-            border-radius: 4px;
+            border-radius: 5px;
+            margin: 0;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
-
-        .budget-form {
-            margin-top: 20px;
+        .budget-chart {
+            margin: 20px 0;
+            padding: 15px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            height: 300px;
         }
-
         .form-group {
-            margin-bottom: 15px;
+            margin: 20px 0;
+            text-align: center;
         }
-
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-
         input[type="number"] {
-            width: 100%;
             padding: 8px;
-            border: 2px solid var(--mega-red);
+            border: 1px solid #ddd;
             border-radius: 4px;
-            font-size: 16px;
+            margin-right: 10px;
+            width: 150px;
         }
-
         button {
-            background-color: var(--mega-red);
+            padding: 8px 16px;
+            background-color: #e31837;
             color: white;
             border: none;
-            padding: 10px 20px;
             border-radius: 4px;
             cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s ease;
         }
-
         button:hover {
-            background-color: #cc0000;
+            background-color: #b31229;
         }
-
         .back-link {
-            display: inline-block;
-            margin-top: 20px;
-            color: var(--mega-red);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #e31837;
             text-decoration: none;
+            margin-top: 20px;
+            transition: color 0.3s ease;
         }
-
+        .back-link:hover {
+            color: #b31229;
+        }
         #update-message {
+            text-align: center;
+            margin-top: 10px;
             padding: 10px;
-            margin: 10px 0;
             border-radius: 4px;
-            display: none;
         }
-
-        .success {
-            background-color: #d4edda;
-            color: #155724;
+        .budget-icon {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #e31837;
         }
-
-        .error {
-            background-color: #f8d7da;
-            color: #721c24;
-        }
-
         @media (max-width: 768px) {
-            body {
-                padding: 10px;
-            }
-
-            .container {
-                padding: 15px;
-            }
-
-            h1 {
-                font-size: 24px;
+            .budget-display {
+                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="content">
         <h1><i class="fas fa-wallet"></i> Buget Săptămânal</h1>
-        
+
         <div class="user-info">
-            <p><i class="fas fa-user"></i> <strong>Email:</strong> <span id="user-email"></span></p>
+            <i class="fas fa-user"></i>
+            <strong>Email: </strong>
+            <span id="user-email"></span>
         </div>
 
         <div class="budget-display">
-            <p><i class="fas fa-coins"></i> <strong>Buget curent:</strong> 
+            <p>
+                <i class="fas fa-piggy-bank budget-icon"></i><br>
+                <strong>Buget curent:</strong><br>
                 <span id="current-budget"></span> RON
+            </p>
+            <p>
+                <i class="fas fa-shopping-cart budget-icon"></i><br>
+                <strong>Cheltuieli luna curentă:</strong><br>
+                <span id="current-expenses"></span> RON
+            </p>
+            <p>
+                <i class="fas fa-chart-line budget-icon"></i><br>
+                <strong>Economii luna curentă:</strong><br>
+                <span id="current-savings"></span> RON
             </p>
         </div>
 
-        <div class="budget-form">
-            <div class="form-group">
-                <label for="newBudget">Setează un buget nou:</label>
-                <input type="number" id="newBudget" name="newBudget" min="0" step="0.01" required />
-            </div>
-            <button type="button" onclick="updateBudget()">
-                <i class="fas fa-save"></i> Actualizează
+        <div class="budget-chart">
+            <canvas id="expenses-chart"></canvas>
+        </div>
+
+        <div class="form-group">
+            <label><i class="fas fa-plus-circle"></i> Setează un buget nou:</label>
+            <input type="number" id="newBudget" min="0" step="0.01" placeholder="Introdu suma">
+            <button onclick="updateBudget()">
+                <i class="fas fa-check"></i> Actualizează
             </button>
         </div>
 
         <div id="update-message"></div>
-        
+
         <a href="/" class="back-link">
             <i class="fas fa-arrow-left"></i> Înapoi la pagina principală
         </a>
     </div>
 
     <script>
-        // Load initial user data
+        let expensesChart;
         async function loadUserData() {
             try {
-                const response = await fetch('/api/user-data');
+                const response = await fetch('/budget/api/user-data');
                 const data = await response.json();
-                
                 document.getElementById('user-email').textContent = data.email;
                 document.getElementById('current-budget').textContent = data.budget;
+                document.getElementById('current-expenses').textContent = 126;
+                document.getElementById('current-savings').textContent = data.currentSavings;
+                updateChart(data.expensesHistory);
             } catch (error) {
-                showMessage('Eroare la încărcarea datelor', 'error');
+                console.error('Error:', error);
             }
         }
-
+        function updateChart(history) {
+            const ctx = document.getElementById('expenses-chart').getContext('2d');
+            if (expensesChart) {
+                expensesChart.destroy();
+            }
+            expensesChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: history.map(h => h.month),
+                    datasets: [{
+                        label: 'Cheltuieli',
+                        data: history.map(h => h.expenses),
+                        backgroundColor: 'rgba(227, 24, 55, 0.7)',
+                        borderColor: 'rgba(227, 24, 55, 1)',
+                        borderWidth: 1
+                    }, {
+                        label: 'Economii',
+                        data: history.map(h => h.savings),
+                        backgroundColor: 'rgba(76, 175, 80, 0.7)',
+                        borderColor: 'rgba(76, 175, 80, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'RON'
+                            }
+                        }
+                    },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Evoluție Cheltuieli și Economii'
+                        }
+                    }
+                }
+            });
+        }
         async function updateBudget() {
             const newBudget = document.getElementById('newBudget').value;
-            
             if (!newBudget || newBudget <= 0) {
-                showMessage('Vă rugăm introduceți un buget valid', 'error');
+                document.getElementById('update-message').textContent = 'Te rugăm să introduci un buget valid';
                 return;
             }
-            
             try {
                 const response = await fetch('/budget', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
                     body: JSON.stringify({ newBudget })
                 });
-
-                const result = await response.json();
-                
+                const data = await response.json();
                 if (response.ok) {
-                    document.getElementById('current-budget').textContent = result.budget;
-                    showMessage('Bugetul a fost actualizat cu succes!', 'success');
+                    document.getElementById('current-budget').textContent = data.budget;
+                    document.getElementById('update-message').textContent = data.message;
                     document.getElementById('newBudget').value = '';
+                    loadUserData();
                 } else {
-                    showMessage(result.error || 'A apărut o eroare.', 'error');
+                    document.getElementById('update-message').textContent = data.error;
                 }
             } catch (error) {
-                showMessage('A apărut o eroare la comunicarea cu serverul.', 'error');
+                console.error('Error:', error);
+                document.getElementById('update-message').textContent = 'Eroare la actualizarea bugetului';
             }
         }
-
-        function showMessage(text, type) {
-            const message = document.getElementById('update-message');
-            message.textContent = text;
-            message.className = type;
-            message.style.display = 'block';
-
-            setTimeout(() => {
-                message.style.display = 'none';
-            }, 3000);
-        }
-
-        // Handle Enter key
-        document.getElementById('newBudget').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                updateBudget();
-            }
-        });
-
-        // Load initial data
         loadUserData();
     </script>
 </body>

@@ -1,0 +1,38 @@
+{
+  "undefined": {
+    "shoppingHistory": [
+      {
+        "date": "2024-12-08T04:50:45.577Z",
+        "items": []
+      },
+      {
+        "date": "2024-12-08T04:55:01.901Z",
+        "items": []
+      },
+      {
+        "date": "2024-12-08T04:55:06.584Z",
+        "items": [
+          {
+            "produs": "Mere galbene",
+            "pret": "1.50",
+            "type": "mere",
+            "valability": "7",
+            "quantity": 1
+          }
+        ]
+      },
+      {
+        "date": "2024-12-08T04:55:07.931Z",
+        "items": []
+      },
+      {
+        "date": "2024-12-08T04:55:09.481Z",
+        "items": []
+      },
+      {
+        "date": "2024-12-08T04:55:09.670Z",
+        "items": []
+      }
+    ]
+  }
+}

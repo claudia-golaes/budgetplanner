@@ -14,6 +14,7 @@ const generalOffersRoutes = require("./general_offers");
 const budgetRoutes = require("./budget");
 const recognizeRecipesRoutes = require("./leftovers");
 const actualShoppingListRoutes = require("./actualShoppingList");
+const leftoverRoutesProd = require("./leftovers");
 
 // Middleware
 app.use(express.urlencoded({ extended: true }));
@@ -40,6 +41,7 @@ app.use(session({
 
 // Rute
 app.use("/login", loginRoutes);
+app.use("/leftovers/add-leftover", leftoverRoutesProd);
 app.use(shoppingListRoutes);
 app.use("/profile", profileRoutes);
 app.use("/offers", offersRoutes);
@@ -47,6 +49,35 @@ app.use("/general-offers", generalOffersRoutes);
 app.use("/budget", budgetRoutes);
 app.use("/leftovers", recognizeRecipesRoutes);
 app.use(actualShoppingListRoutes);
+
+app.use((req, res, next) => {
+    if (req.session.user && !req.session.user.loyaltyPoints) {
+        req.session.user.loyaltyPoints = 45; // Puncte inițiale
+    }
+    next();
+});
+
+// Endpoint pentru a obține punctele de fidelitate
+app.get('/api/loyalty-points', (req, res) => {
+    if (!req.session.user) {
+        return res.status(401).json({ error: "Nu sunteți autentificat" });
+    }
+    res.json({ points: req.session.user.loyaltyPoints });
+});
+
+// Endpoint pentru a actualiza punctele (va fi folosit de Memory Game)
+app.post('/api/loyalty-points/add', (req, res) => {
+    if (!req.session.user) {
+        return res.status(401).json({ error: "Nu sunteți autentificat" });
+    }
+    
+    req.session.user.loyaltyPoints += 5; // Adaugă 5 puncte
+    res.json({ 
+        success: true, 
+        points: req.session.user.loyaltyPoints,
+        message: "Felicitări! Ai câștigat 5 puncte de fidelitate!" 
+    });
+});
 
 // API endpoint pentru datele utilizatorului și notificări
 app.get("/api/user-data", (req, res) => {

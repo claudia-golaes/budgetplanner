@@ -1,6 +1,5 @@
-@font-face {
-    font-family: Fredoka;
-    src: url(./FredokaOne-Regular.ttf);
+*{
+    font-family: 'Arial', sans-serif;
 }
 
 html {

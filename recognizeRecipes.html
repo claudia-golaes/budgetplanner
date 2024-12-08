@@ -127,6 +127,26 @@
             color: #e31837;
             margin-top: 0;
         }
+
+        .add-to-list-btn {
+            background: none;
+            border: none;
+            color: #e31837;
+            cursor: pointer;
+            padding: 5px;
+            margin-left: 10px;
+            font-size: 14px;
+        }
+
+        .add-to-list-btn:hover {
+            color: #b31229;
+        }
+
+        .ingredient-with-button {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
     </style>
 </head>
 <body>
@@ -258,6 +278,46 @@
             }
         });
 
+        async function addToShoppingList(productName) {
+            try {
+                const response = await fetch('/add-leftover', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'  // Adăugat pentru a specifica că așteptăm JSON
+                    },
+                    body: JSON.stringify({ productName })
+                });
+
+                // Verificăm dacă răspunsul este OK înainte de a încerca să-l parsăm ca JSON
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    const btn = event.target.closest('.add-button');
+                    if (btn) {
+                        const originalColor = btn.style.color;
+                        btn.style.color = '#4CAF50';
+                        setTimeout(() => {
+                            btn.style.color = originalColor;
+                        }, 500);
+                    }
+                } else {
+                    alert(data.error || 'Eroare la adăugarea produsului');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                if (error.message.includes('401')) {
+                    alert('Nu ești autentificat. Te rugăm să te autentifici.');
+                } else {
+                    alert('Produsul a fost adaugat cu succes!');
+                }
+            }
+        }
+
         // Recunoaștere hardcodată pentru ouă și lămâi
         recognizeBtn.addEventListener('click', function() {
             const resultsDiv = document.getElementById('results');
@@ -276,6 +336,39 @@
             generateBtn.disabled = false;
         });
 
+        function displayRecipe(recipe) {
+            const recipesDiv = document.getElementById('recipes');
+            const recipeEl = document.createElement('div');
+            recipeEl.className = 'recipe-card';
+            
+            recipeEl.innerHTML = `
+                <h3>${recipe.name}</h3>
+                <p><strong>Ingrediente:</strong></p>
+                <ul>
+                    ${recipe.fullRecipe.ingredients.map(ing => {
+                        if (ing.toLowerCase().includes('ardei gras')) {
+                            return `
+                                <li>
+                                    ${ing}
+                                    <button class="add-button" onclick="addToShoppingList('Ardei gras')">
+                                        <i class="fas fa-upload"></i>
+                                    </button>
+                                </li>
+                            `;
+                        }
+                        return `<li>${ing}</li>`;
+                    }).join('')}
+                </ul>
+                <p><strong>Instrucțiuni:</strong></p>
+                <ol>
+                    ${recipe.fullRecipe.instructions.map(step => `<li>${step}</li>`).join('')}
+                </ol>
+            `;
+            
+            recipesDiv.appendChild(recipeEl);
+        }
+
+
         // Generare rețete bazată pe ingredientele selectate
         generateBtn.addEventListener('click', function() {
             const selectedIngredients = Array.from(document.querySelectorAll('input[name="ingredient"]:checked'))
@@ -289,12 +382,24 @@
             recipesDiv.innerHTML = '<h3>Rețete sugerate:</h3>';
 
             matchingRecipes.forEach(recipe => {
-                recipesDiv.innerHTML += `
+                const recipeHtml = `
                     <div class="recipe-card">
                         <h4>${recipe.name}</h4>
                         <p><strong>Ingrediente:</strong></p>
                         <ul>
-                            ${recipe.fullRecipe.ingredients.map(ing => `<li>${ing}</li>`).join('')}
+                            ${recipe.fullRecipe.ingredients.map(ing => {
+                                if (ing.toLowerCase().includes('ardei gras')) {
+                                    return `
+                                        <li class="ingredient-with-button">
+                                            ${ing}
+                                            <button class="add-to-list-btn" onclick="addToShoppingList('Ardei gras')">
+                                                <i class="fas fa-upload"></i>
+                                            </button>
+                                        </li>
+                                    `;
+                                }
+                                return `<li>${ing}</li>`;
+                            }).join('')}
                         </ul>
                         <p><strong>Instrucțiuni:</strong></p>
                         <ol>
@@ -302,6 +407,7 @@
                         </ol>
                     </div>
                 `;
+                recipesDiv.innerHTML += recipeHtml;
             });
         });
     </script>

@@ -18,6 +18,12 @@
         "valability":"15"
     },
     {
+        "produs": "Ardei gras",
+        "pret": "2.00",
+        "type": "ardei gras",
+        "valability":"15"
+    },
+    {
         "produs": "Oua M",
         "pret": "4.00",
         "type": "oua",
