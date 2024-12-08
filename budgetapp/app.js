@@ -1,6 +1,6 @@
 const express = require("express");
 const session = require("express-session");
-const path = require("path"); // Pentru a gestiona căi de fișiere
+const path = require("path");
 const app = express();
 const port = 3000;
 
@@ -11,13 +11,13 @@ const shoppingListRoutes = require("./shoppingList");
 const { getData } = require("./accounts");
 const offersRoutes = require("./offers");
 const generalOffersRoutes = require("./general_offers");
-const budgetRoutes = require("./budget"); // Importă ruta bugetului
-const recognizeRecipesRoutes = require("./leftovers"); // Importă ruta pentru recunoaștere
-
-
-app.use(express.urlencoded({ extended: true })); // Middleware pentru formulare
-app.use(express.json());
+const budgetRoutes = require("./budget");
+const recognizeRecipesRoutes = require("./leftovers");
 const actualShoppingListRoutes = require("./actualShoppingList");
+
+// Middleware
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 
 
@@ -32,71 +32,42 @@ app.use(
 
 // Middleware pentru servirea fișierelor statice (în cazul în care mai sunt alte resurse CSS/JS de accesat)
 app.use(express.static(__dirname));
-// Rutele pentru login
+app.use(session({
+    secret: "secret-key",
+    resave: false,
+    saveUninitialized: true,
+}));
+
+// Rute
 app.use("/login", loginRoutes);
-// Rutele pentru lista de cumpărături
 app.use(shoppingListRoutes);
-// Rutele pentru profil
 app.use("/profile", profileRoutes);
-// Ruta pentru oferte
 app.use("/offers", offersRoutes);
 app.use("/general-offers", generalOffersRoutes);
 app.use("/budget", budgetRoutes);
-app.use("/leftovers", recognizeRecipesRoutes); // Înregistrează ruta în Express
-
-
-
+app.use("/leftovers", recognizeRecipesRoutes);
 app.use(actualShoppingListRoutes);
 
-// Ruta pentru jocul Memory
-app.get("/memory-game", (req, res) => {
-    res.sendFile(path.join(__dirname, "memory.html")); // Servește fișierul HTML pentru joc
-});
-
-// Endpoint principal
-app.get("/", (req, res) => {
-    const data = getData();
-
-    if (!data || data.length === 0) {
-        return res.send(
-            "Datele nu sunt încă încărcate. Încearcă din nou mai târziu."
-        );
-    }
-
+// API endpoint pentru datele utilizatorului și notificări
+app.get("/api/user-data", (req, res) => {
     if (!req.session.user) {
-        const loginButton = `
-            <form action="/login" method="get">
-                <button type="submit">Login</button>
-            </form>
-        `;
-        return res.send(`
-            <h1>Bine ai venit!</h1>
-            <p>Te rugăm să te autentifici pentru a vedea notificările.</p>
-            ${loginButton}
-        `);
+        return res.status(401).json({ error: "Nu sunteți autentificat" });
     }
 
-    const loggedInUser = req.session.user.account.email;
-
-    // Găsim utilizatorul curent în date
-    const userData = data.find(user => user.account.email === loggedInUser);
-
+    const data = getData();
+    const userData = data.find(user => user.account.email === req.session.user.account.email);
+    
     if (!userData) {
-        return res.send(`
-            <h1>Eroare!</h1>
-            <p>Nu am găsit date pentru utilizatorul logat.</p>
-        `);
+        return res.status(404).json({ error: "Utilizatorul nu a fost găsit" });
     }
 
-    // Verificăm produsele utilizatorului logat care expiră în curând
-    let expiringProducts = [];
+    // Calculează notificările pentru produsele care expiră
+    let notifications = [];
     userData.receipts.forEach(receipt => {
         receipt.products.forEach(product => {
             const remainingDays = product.valability - receipt.days;
-    
-            // Verificăm dacă produsul este expirat sau expiră în curând
             if (remainingDays <= 3) {
-                expiringProducts.push({
+                notifications.push({
                     produs: product.produs,
                     pret: product.pret,
                     type: product.type,
@@ -107,27 +78,81 @@ app.get("/", (req, res) => {
             }
         });
     });
-    
-    // Generăm notificările pentru utilizatorul logat
-    const notifications = expiringProducts.map(product => `
-        <div style="border: 1px solid ${product.status.includes("expirat") ? "darkred" : "orange"}; padding: 10px; margin-bottom: 10px;">
-            <h3>${product.status.includes("expirat") ? "Produs expirat!" : "Produs care expiră curând!"}</h3>
-            <p><strong>${product.produs}</strong> (${product.type})</p>
-            <p>Preț: ${product.pret} RON</p>
-            <p>${product.status}</p>
-        </div>
-    `).join("");
-    
 
-    const welcomeMessage = `<h2>Bun venit, ${loggedInUser}!</h2>`;
-    res.send(`
-        ${welcomeMessage}
-        ${notifications || "<p>Nu există produse care să expire în curând.</p>"}
-    `);
+    res.json({
+        email: userData.account.email,
+        notifications: notifications,
+        username: userData.account.username
+    });
 });
 
+// Ruta pentru jocul Memory
+app.get("/memory-game", (req, res) => {
+    res.sendFile(path.join(__dirname, "memory.html"));
+});
+
+// Ruta principală
+app.get("/", (req, res) => {
+    const data = getData();
+
+    if (!data || data.length === 0) {
+        return res.send("Datele nu sunt încă încărcate. Încearcă din nou mai târziu.");
+    }
+
+    if (!req.session.user) {
+        return res.send(`
+            <!DOCTYPE html>
+            <html lang="ro">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>MegaImage - Welcome</title>
+                <style>
+                    body {
+                        font-family: Arial, sans-serif;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+                        height: 100vh;
+                        margin: 0;
+                        background-color: #f5f5f5;
+                    }
+                    h1 {
+                        color: #e31837;
+                        margin-bottom: 1rem;
+                    }
+                    button {
+                        background-color: #e31837;
+                        color: white;
+                        border: none;
+                        padding: 10px 20px;
+                        border-radius: 4px;
+                        cursor: pointer;
+                        font-size: 1rem;
+                        margin-top: 1rem;
+                    }
+                    button:hover {
+                        background-color: #b31229;
+                    }
+                </style>
+            </head>
+            <body>
+                <h1>Bine ai venit!</h1>
+                <p>Te rugăm să te autentifici pentru a vedea notificările.</p>
+                <form action="/login" method="get">
+                    <button type="submit">Login</button>
+                </form>
+            </body>
+            </html>
+        `);
+    }
+
+    // Servește pagina principală pentru utilizatorii autentificați
+    res.sendFile(path.join(__dirname, "home.html"));
+});
 
 // Pornirea serverului
 app.listen(port, () => {
-    console.log(`App running at http://localhost:${port}`);
+    console.log(`Aplicația rulează la http://localhost:${port}`);
 });

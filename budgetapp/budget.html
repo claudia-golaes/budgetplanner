@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MegaImage - Buget Săptămânal</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --mega-red: #e60012;
+            --mega-black: #1a1a1a;
+            --mega-gray: #f5f5f5;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: var(--mega-gray);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: var(--mega-red);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .user-info {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: var(--mega-black);
+            color: white;
+            border-radius: 4px;
+        }
+
+        .budget-display {
+            font-size: 1.2em;
+            margin: 20px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+
+        .budget-form {
+            margin-top: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            border: 2px solid var(--mega-red);
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: var(--mega-red);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #cc0000;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: var(--mega-red);
+            text-decoration: none;
+        }
+
+        #update-message {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            display: none;
+        }
+
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><i class="fas fa-wallet"></i> Buget Săptămânal</h1>
+        
+        <div class="user-info">
+            <p><i class="fas fa-user"></i> <strong>Email:</strong> <span id="user-email"></span></p>
+        </div>
+
+        <div class="budget-display">
+            <p><i class="fas fa-coins"></i> <strong>Buget curent:</strong> 
+                <span id="current-budget"></span> RON
+            </p>
+        </div>
+
+        <div class="budget-form">
+            <div class="form-group">
+                <label for="newBudget">Setează un buget nou:</label>
+                <input type="number" id="newBudget" name="newBudget" min="0" step="0.01" required />
+            </div>
+            <button type="button" onclick="updateBudget()">
+                <i class="fas fa-save"></i> Actualizează
+            </button>
+        </div>
+
+        <div id="update-message"></div>
+        
+        <a href="/" class="back-link">
+            <i class="fas fa-arrow-left"></i> Înapoi la pagina principală
+        </a>
+    </div>
+
+    <script>
+        // Load initial user data
+        async function loadUserData() {
+            try {
+                const response = await fetch('/api/user-data');
+                const data = await response.json();
+                
+                document.getElementById('user-email').textContent = data.email;
+                document.getElementById('current-budget').textContent = data.budget;
+            } catch (error) {
+                showMessage('Eroare la încărcarea datelor', 'error');
+            }
+        }
+
+        async function updateBudget() {
+            const newBudget = document.getElementById('newBudget').value;
+            
+            if (!newBudget || newBudget <= 0) {
+                showMessage('Vă rugăm introduceți un buget valid', 'error');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/budget', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ newBudget })
+                });
+
+                const result = await response.json();
+                
+                if (response.ok) {
+                    document.getElementById('current-budget').textContent = result.budget;
+                    showMessage('Bugetul a fost actualizat cu succes!', 'success');
+                    document.getElementById('newBudget').value = '';
+                } else {
+                    showMessage(result.error || 'A apărut o eroare.', 'error');
+                }
+            } catch (error) {
+                showMessage('A apărut o eroare la comunicarea cu serverul.', 'error');
+            }
+        }
+
+        function showMessage(text, type) {
+            const message = document.getElementById('update-message');
+            message.textContent = text;
+            message.className = type;
+            message.style.display = 'block';
+
+            setTimeout(() => {
+                message.style.display = 'none';
+            }, 3000);
+        }
+
+        // Handle Enter key
+        document.getElementById('newBudget').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                updateBudget();
+            }
+        });
+
+        // Load initial data
+        loadUserData();
+    </script>
+</body>
+</html>

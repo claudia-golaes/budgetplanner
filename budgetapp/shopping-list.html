@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MegaImage Shopping List</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --mega-red: #e60012;
+            --mega-black: #1a1a1a;
+            --mega-gray: #f5f5f5;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: var(--mega-gray);
+            min-height: 100vh;
+        }
+
+        .header {
+            background-color: var(--mega-red);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .budget-display {
+            background-color: var(--mega-black);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .dashboard {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .dashboard {
+                flex-direction: row;
+            }
+
+            .shopping-list-section,
+            .product-catalog-section {
+                flex: 1;
+            }
+        }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            height: 100%;
+        }
+
+        .card h2 {
+            color: var(--mega-red);
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--mega-red);
+            padding-bottom: 10px;
+        }
+
+        .product-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            transition: background-color 0.2s;
+        }
+
+        .product-item:hover {
+            background-color: #f8f8f8;
+        }
+
+        .product-info {
+            flex: 1;
+        }
+
+        .product-name {
+            font-weight: bold;
+            color: var(--mega-black);
+        }
+
+        .product-price {
+            color: var(--mega-red);
+            font-size: 0.9em;
+        }
+
+        .quantity {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .btn {
+            background-color: var(--mega-red);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn:hover {
+            background-color: #cc0000;
+        }
+
+        .btn-remove {
+            background-color: #ff4444;
+        }
+
+        .search-container {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 12px;
+            padding-left: 40px;
+            border: 2px solid var(--mega-red);
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--mega-red);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            background-color: var(--mega-black);
+            color: white;
+            border-radius: 4px;
+            display: none;
+            z-index: 1000;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .catalog-toggle {
+            display: none;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .back-section {
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        
+
+        @media (max-width: 767px) {
+            .catalog-toggle {
+                display: block;
+            }
+
+            .product-catalog-section {
+                display: none;
+            }
+
+            .product-catalog-section.active {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1><i class="fas fa-shopping-cart"></i> MegaImage Shopping List</h1>
+    </div>
+
+    <div class="container">
+        <div class="budget-display">
+            <span><i class="fas fa-wallet"></i> Buget curent:</span>
+            <span id="currentBudget">Loading...</span>
+        </div>
+
+        <button class="btn catalog-toggle" onclick="toggleCatalog()">
+            <i class="fas fa-list"></i> Toggle Catalog
+        </button>
+
+        <div class="dashboard">
+            <div class="shopping-list-section card">
+                <h2><i class="fas fa-shopping-basket"></i> Lista de cumpărături</h2>
+                <div id="shoppingList">
+                    <!-- Shopping list items will be inserted here -->
+                </div>
+            </div>
+
+            <div class="product-catalog-section card">
+                <h2><i class="fas fa-store"></i> Catalog Produse</h2>
+                <div class="search-container">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" id="searchBar" class="search-bar" placeholder="Caută produse...">
+                </div>
+                <div id="productList">
+                    <!-- Product list items will be inserted here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="notification" class="notification"></div>
+
+    <script>
+        let catalogVisible = true;
+
+        function toggleCatalog() {
+            const catalog = document.querySelector('.product-catalog-section');
+            catalogVisible = !catalogVisible;
+            catalog.classList.toggle('active', catalogVisible);
+        }
+
+        async function loadData() {
+            try {
+                const response = await fetch('/api/shopping-list/data');
+                const data = await response.json();
+                
+                // Update budget display
+                document.getElementById('currentBudget').textContent = `${data.budget} RON`;
+                
+                // Update shopping list
+                updateShoppingList(data.shoppingList);
+                
+                // Update product catalog
+                updateProductList(data.products);
+            } catch (error) {
+                showNotification('Error loading data', 'error');
+            }
+        }
+
+        function updateShoppingList(items) {
+            const container = document.getElementById('shoppingList');
+            if (items.length === 0) {
+                container.innerHTML = '<div class="empty-state"><i class="fas fa-shopping-cart"></i><p>Lista ta de cumpărături este goală</p></div>';
+                return;
+            }
+
+            container.innerHTML = items.map((item, index) => `
+                <div class="product-item">
+                    <div class="product-info">
+                        <div class="product-name">${item.produs}</div>
+                        <div class="product-price">${item.pret} RON</div>
+                        <div class="quantity">Cantitate: ${item.quantity || 1}</div>
+                    </div>
+                    <button class="btn btn-remove" onclick="removeFromShoppingList(${index})">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function updateProductList(products) {
+            const container = document.getElementById('productList');
+            container.innerHTML = products.map((product, index) => `
+                <div class="product-item">
+                    <div class="product-info">
+                        <div class="product-name">${product.produs}</div>
+                        <div class="product-price">${product.pret} RON</div>
+                    </div>
+                    <button class="btn" onclick="addToShoppingList(${index})">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.style.backgroundColor = type === 'error' ? '#ff4444' : '#1a1a1a';
+            notification.style.display = 'block';
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
+
+        async function addToShoppingList(index) {
+            try {
+                const response = await fetch('/shopping-list/add', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ index }),
+                });
+                
+                if (response.ok) {
+                    if (response.headers.get('content-type')?.includes('application/json')) {
+                        const data = await response.json();
+                        if (data.cheaperProduct) {
+                            if (confirm(data.message)) {
+                                await addToShoppingList(data.cheaperProduct.index, true);
+                            }
+                        }else{
+                            await addToShoppingList(data.product.index, true);
+                        }
+                    }
+                    await loadData();
+                    
+                    showNotification('Produs adăugat cu succes!');
+                } else {
+                    throw new Error('Failed to add product');
+                }
+            } catch (error) {
+                showNotification('A apărut o eroare la adăugarea produsului.', 'error');
+            }
+        }
+
+        async function removeFromShoppingList(index) {
+            try {
+                const response = await fetch('/shopping-list/remove', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ index }),
+                });
+                
+                if (response.ok) {
+                    await loadData();
+                    showNotification('Produs eliminat cu succes!');
+                } else {
+                    throw new Error('Failed to remove product');
+                }
+            } catch (error) {
+                showNotification('A apărut o eroare la eliminarea produsului.', 'error');
+            }
+        }
+
+        // Search functionality
+        document.getElementById('searchBar').addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const productItems = document.querySelectorAll('#productList .product-item');
+            
+            productItems.forEach(item => {
+                const productName = item.querySelector('.product-name').textContent.toLowerCase();
+                const productPrice = item.querySelector('.product-price').textContent.toLowerCase();
+                
+                if (productName.includes(searchTerm) || productPrice.includes(searchTerm)) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+
+        // Handle keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'f' && (e.ctrlKey || e.metaKey)) {
+                e.preventDefault();
+                document.getElementById('searchBar').focus();
+            }
+        });
+
+        // Handle mobile view
+        function checkMobileView() {
+            if (window.innerWidth <= 767) {
+                document.querySelector('.product-catalog-section').classList.toggle('active', catalogVisible);
+            } else {
+                document.querySelector('.product-catalog-section').classList.remove('active');
+            }
+        }
+
+        window.addEventListener('resize', checkMobileView);
+        checkMobileView();
+
+        // Initialize data
+        loadData();
+
+        // Polling for updates (optional, can be replaced with WebSocket)
+        setInterval(loadData, 30000); // Update every 30 seconds
+
+    </script>
+        
+</body>
+</html>
